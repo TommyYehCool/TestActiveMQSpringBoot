@@ -1,0 +1,65 @@
+version = '1.0'
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+// Version settings
+ext {
+	junitVersion = '4.+'
+}
+
+// ref: https://github.com/manish-in-java/spring-boot-rest/blob/master/build.gradle
+buildscript {
+	ext {
+		springBootVersion = '1.4.3.RELEASE'
+	}
+
+    repositories {
+    	jcenter()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+    }
+}
+
+repositories {
+	jcenter()
+    mavenCentral()
+}
+
+// 處理 javadoc 編碼
+// https://github.com/nebula-plugins/gradle-aggregate-javadocs-plugin/issues/6
+javadoc {
+    options {
+        failOnError = false
+        encoding = "UTF-8"    
+        docEncoding = "UTF-8" 
+        charSet = "UTF-8" 
+        linkSource = true
+    }
+}
+
+// To specify the main class of Spring Boot
+springBoot {
+    mainClass = "com.exfantasy.training.Application"
+}
+
+dependencies {
+	// --------- Spring Boot ---------
+	compile "org.springframework.boot:spring-boot-starter-activemq"
+	compile "org.springframework.boot:spring-boot-starter-test"
+	
+	// --------- JUnit --------- 
+    testCompile "junit:junit:${junitVersion}"
+}
+
+// ref: https://www.mkyong.com/gradle/how-to-use-gradle-wrapper/
+task wrapper(type: Wrapper) {
+	gradleVersion = '2.14.1'
+}
